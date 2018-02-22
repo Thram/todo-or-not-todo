@@ -1,0 +1,109 @@
+{
+  "name": "todo-or-not-todo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "postinstall": "electron-builder install-app-deps",
+    "@dev": "parcel ./src/index.html -d build/",
+    "@start": "electron .",
+    "@build:clean": "rimraf build",
+    "@build:bundle": "parcel build ./src/index.html --no-cache -d build/ --public-url ./",
+    "@build:app": "electron-builder",
+    "@pack": "yarn @build:app --dir",
+    "@lint": "eslint src --ext .jsx,.js",
+    "@format": "prettier-eslint --write \"src/**/*.{js,jsx}\"",
+    "@git:add": "git add .",
+    "@git:cz": "git cz",
+    "cz": "npm-run-all @format @lint @git:add @git:cz",
+    "start:dev": "ELECTRON_START_URL=http://localhost:1234 npm-run-all --parallel @dev @start",
+    "start:prod": "npm-run-all @rm:build @build @start",
+    "dist:pack": "npm-run-all @build:clean @build:bundle @pack",
+    "dist": "npm-run-all @build:clean @build:bundle @build:app"
+  },
+  "build": {
+    "appId": "thram.todoOrNotTodo",
+    "productName": "Todo or Not Todo",
+    "asar": true,
+    "files": [
+      "main.js",
+      "menu.js",
+      "updater.js",
+      "build"
+    ],
+    "dmg": {
+      "contents": [
+        {
+          "x": 510,
+          "y": 150
+        },
+        {
+          "x": 640,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "win": {
+      "target": "squirrel",
+      "icon": "build/icon.ico"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "Thram",
+        "repo": "media-slideshow"
+      }
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Thram/todo-or-not-todo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Thram/todo-or-not-todo/issues"
+  },
+  "homepage": "https://github.com/Thram/todo-or-not-todo#readme",
+  "devDependencies": {
+    "babel-eslint": "^8.2.2",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "commitizen": "^2.9.6",
+    "cz-conventional-changelog": "^2.1.0",
+    "electron": "^1.8.2",
+    "electron-builder": "^20.0.8",
+    "electron-reload": "^1.2.2",
+    "eslint": "^4.18.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0",
+    "npm-run-all": "^4.1.2",
+    "parcel-bundler": "^1.6.2",
+    "prettier-eslint-cli": "^4.7.1",
+    "rimraf": "^2.6.2"
+  },
+  "dependencies": {
+    "electron-log": "^2.2.14",
+    "electron-updater": "^2.20.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  }
+}
